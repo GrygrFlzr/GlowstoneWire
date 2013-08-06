@@ -1,29 +1,26 @@
 package grygrflzr.mods.glowstonewire;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.potion.PotionHelper;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = "GrygrFlzr_GlowstoneWire", name = "Glowstone Wire", version = "build 108")
+@Mod(modid = "GrygrFlzr_GlowstoneWire", name = "Glowstone Wire", version = "build 110")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class GlowstoneWireMod {
 	public static Block glowstoneWire;
-	public static int gsWireBlockID = 254;
+	public static int gsWireBlockID = 4095;
 	public static int gsWireColorR = 255;
 	public static int gsWireColorG = 255;
 	public static int gsWireColorB = 0;
-	//public static Item lightStoneDust = (new ItemGlowstone(92)).setIconCoord(9, 4).setItemName("yellowDust").setCreativeTab(CreativeTabs.tabMaterials);
-	//public static Item lightStoneDust = (new ItemGlowstone(92)).setUnlocalizedName("yellowDust").setPotionEffect(PotionHelper.glowstoneEffect).setCreativeTab(CreativeTabs.tabMaterials);
-	public static Item lightStoneDust = (new ItemGlowstone(92)).setUnlocalizedName("yellowDust").setPotionEffect(PotionHelper.glowstoneEffect).setCreativeTab(CreativeTabs.tabMaterials);
+
 	@SidedProxy(clientSide = "grygrflzr.mods.glowstonewire.ClientProxy", serverSide = "grygrflzr.mods.glowstonewire.CommonProxy")
 	public static CommonProxy proxy;
 	@Instance("GrygrFlzr_GlowstoneWire")
@@ -65,7 +62,11 @@ public class GlowstoneWireMod {
 		config.save();
 		
 		glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireBlockID, gsWireColorR, gsWireColorG, gsWireColorB)).setHardness(0.0F).setLightValue(0.625F).setStepSound(Block.soundPowderFootstep).setUnlocalizedName("glowstoneDust");
+	}
+	@EventHandler
+	public void load(FMLInitializationEvent event) {
 		GameRegistry.registerBlock(glowstoneWire, "glowstoneDust");
+		MinecraftForge.EVENT_BUS.register(new GlowstoneWireEventHook());
 		proxy.registerRenderInformation();
 	}
 }

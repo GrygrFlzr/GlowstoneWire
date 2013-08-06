@@ -1,0 +1,21 @@
+[
+{
+  "modid": "GrygrFlzr_GlowstoneWire",
+  "name": "Glowstone Wire",
+  "description": "Adds aesthetic placeable glowstone wire.",
+  "version": "Build 110",
+  "mcversion": "1.6.1",
+  "url": "http://www.minecraftforum.net/topic/944547-",
+  "updateUrl": "",
+  "authors": [
+    "GrygrFlzr"
+  ],
+  "credits": "By GrygrFlzr, based on an idea by AkaSquirticus",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]
