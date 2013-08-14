@@ -12,7 +12,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = "GrygrFlzr_GlowstoneWire", name = "Glowstone Wire", version = "build 110")
+@Mod(modid = "GrygrFlzr_GlowstoneWire", name = "Glowstone Wire", version = "build 111")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class GlowstoneWireMod {
 	public static Block glowstoneWire;

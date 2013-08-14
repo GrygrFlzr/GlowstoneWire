@@ -9,7 +9,8 @@ public class GlowstoneWireEventHook {
 	@ForgeSubscribe
 	public void playerInteract(PlayerInteractEvent event) {
 		if(event.action == event.action.RIGHT_CLICK_BLOCK) {
-			if(event.entityPlayer.inventory.getCurrentItem().itemID == Item.glowstone.itemID) {
+			if(event.entityPlayer.inventory.getCurrentItem() != null &&
+				event.entityPlayer.inventory.getCurrentItem().itemID == Item.glowstone.itemID) {
 				int x = event.x;
 				int y = event.y;
 				int z = event.z;
