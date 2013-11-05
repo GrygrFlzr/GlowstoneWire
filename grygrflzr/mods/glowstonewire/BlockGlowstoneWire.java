@@ -53,9 +53,9 @@ public class BlockGlowstoneWire extends Block
         this.disableStats();
         this.func_111022_d("redstone_dust");
         wireColorR = par2;
-    	wireColorG = par3;
-    	wireColorB = par4;
-    	wireColor = (par2*65536)+(par3*256)+par4;
+        wireColorG = par3;
+        wireColorB = par4;
+        wireColor = (par2*65536)+(par3*256)+par4;
     }
 
     /**
@@ -330,10 +330,10 @@ public class BlockGlowstoneWire extends Block
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-    	if (par1IBlockAccess.getBlockId(par2, par3, par4) != GlowstoneWireMod.glowstoneWire.blockID)
-    	{
-    		return 0;
-    	}
+        if (par1IBlockAccess.getBlockId(par2, par3, par4) != GlowstoneWireMod.glowstoneWire.blockID)
+        {
+            return 0;
+        }
         if (!this.wiresProvidePower)
         {
             return 0;
@@ -399,7 +399,7 @@ public class BlockGlowstoneWire extends Block
      */
     public static boolean isPowerProviderOrWire(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
     {
-    	return par0IBlockAccess.getBlockId(par1, par2, par3) == GlowstoneWireMod.glowstoneWire.blockID;
+        return par0IBlockAccess.getBlockId(par1, par2, par3) == GlowstoneWireMod.glowstoneWire.blockID;
     }
 
     @SideOnly(Side.CLIENT)
@@ -423,7 +423,7 @@ public class BlockGlowstoneWire extends Block
      */
     public static boolean isPoweredOrRepeater(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
     {
-    	return par0IBlockAccess.getBlockId(par1, par2, par3) == GlowstoneWireMod.glowstoneWire.blockID;
+        return par0IBlockAccess.getBlockId(par1, par2, par3) == GlowstoneWireMod.glowstoneWire.blockID;
     }
 
     @SideOnly(Side.CLIENT)

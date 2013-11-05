@@ -9,39 +9,39 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler{
-	public int modelID;
-	
-	public GlowstoneWireBlocksRenderer(int RID) {
-		modelID = RID;
-	}
-	
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int renderId, RenderBlocks renderer)
-	{
-		return renderId == ClientProxy.glowstoneWireRenderID ? renderBlockGlowstoneWire(block, x, y, z, renderer) :
-			false;
-	}
+    public int modelID;
+    
+    public GlowstoneWireBlocksRenderer(int RID) {
+        modelID = RID;
+    }
+    
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int renderId, RenderBlocks renderer)
+    {
+        return renderId == ClientProxy.glowstoneWireRenderID ? renderBlockGlowstoneWire(block, x, y, z, renderer) :
+            false;
+    }
 
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID,
-			RenderBlocks renderer) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelID,
+            RenderBlocks renderer) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	@Override
-	public boolean shouldRender3DInInventory() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean shouldRender3DInInventory() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public int getRenderId() {
-		// TODO Auto-generated method stub
-		return ClientProxy.glowstoneWireRenderID;
-	}
-	
-	public boolean renderBlockGlowstoneWire(Block par1Block, int par2, int par3, int par4, RenderBlocks renderer)
+    @Override
+    public int getRenderId() {
+        // TODO Auto-generated method stub
+        return ClientProxy.glowstoneWireRenderID;
+    }
+    
+    public boolean renderBlockGlowstoneWire(Block par1Block, int par2, int par3, int par4, RenderBlocks renderer)
     {
         Tessellator tessellator = Tessellator.instance;
         int l = renderer.blockAccess.getBlockMetadata(par2, par3, par4);
@@ -265,6 +265,6 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
 
         return true;
     }
-	
-	
+    
+    
 }
