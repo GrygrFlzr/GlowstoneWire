@@ -43,7 +43,7 @@ public class BlockGlowstoneWire extends Block
         super(par1, Material.circuits);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
         this.disableStats();
-        this.func_111022_d("redstone_dust");
+        this.setTextureName("redstone_dust");
     }
     
     public BlockGlowstoneWire(int par1, int par2, int par3, int par4)
@@ -51,7 +51,7 @@ public class BlockGlowstoneWire extends Block
         super(par1, Material.circuits);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
         this.disableStats();
-        this.func_111022_d("redstone_dust");
+        this.setTextureName("redstone_dust");
         wireColorR = par2;
         wireColorG = par3;
         wireColorB = par4;
@@ -444,11 +444,11 @@ public class BlockGlowstoneWire extends Block
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.field_94413_c = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "cross");
-        this.field_94410_cO = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "line");
-        this.field_94411_cP = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "cross_overlay");
-        this.field_94412_cQ = par1IconRegister.registerIcon(this.func_111023_E() + "_" + "line_overlay");
-        this.blockIcon = this.field_94413_c;
+        BlockGlowstoneWire.field_94413_c = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
+        BlockGlowstoneWire.field_94410_cO = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
+        BlockGlowstoneWire.field_94411_cP = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
+        BlockGlowstoneWire.field_94412_cQ = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
+        this.blockIcon = BlockGlowstoneWire.field_94413_c;
     }
 
     @SideOnly(Side.CLIENT)

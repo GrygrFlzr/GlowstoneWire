@@ -1,8 +1,11 @@
 package grygrflzr.mods.glowstonewire;
 
+import java.util.logging.Level;
+
 import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -37,13 +40,13 @@ public class GlowstoneWireMod {
         
         //validate
         if(gsWireBlockID > 4095 || gsWireBlockID < 0) {
-            System.out.println("Glowstone Wire: Invalid Block ID, resetting to default");
+        	FMLLog.log(Level.WARNING, "Glowstone Wire: Invalid Block ID, resetting to default");
             config.removeCategory(config.getCategory("block"));
             gsWireBlockID = config.getBlock("Glowstone Wire Block ID", 4095).getInt();
         }
         
         if(Block.blocksList[gsWireBlockID] != null) {
-            System.out.println("Glowstone Wire: Block ID exists, resetting to default");
+        	FMLLog.log(Level.WARNING, "Glowstone Wire: Block ID exists, resetting to default");
             config.removeCategory(config.getCategory("block"));
             gsWireBlockID = config.getBlock("Glowstone Wire Block ID", 4095).getInt();
         }
@@ -52,7 +55,7 @@ public class GlowstoneWireMod {
            gsWireColorR > 255 || gsWireColorR < 0 ||
            gsWireColorB > 255 || gsWireColorB < 0)
         { //use default if ANY value is out of range.
-            System.out.println("Glowstone Wire: Invalid colors, resetting to default");
+            FMLLog.log(Level.WARNING, "Glowstone Wire: Invalid colors, resetting to default");
             config.removeCategory(config.getCategory("color"));
             config.addCustomCategoryComment("color", "Color Range: 0-255, uses default values if out of range");
             gsWireColorR = config.get("color", "Wire Color Red", 255).getInt();
