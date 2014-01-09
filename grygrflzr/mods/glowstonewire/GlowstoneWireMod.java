@@ -1,10 +1,8 @@
 package grygrflzr.mods.glowstonewire;
 
-import java.util.logging.Level;
-
 import net.minecraft.block.Block;
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -12,11 +10,9 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid = "GrygrFlzr_GlowstoneWire", name = "Glowstone Wire", version = "build 111")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class GlowstoneWireMod {
     public static Block glowstoneWire;
     public static int gsWireBlockID = 4095;
@@ -33,29 +29,31 @@ public class GlowstoneWireMod {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
         config.addCustomCategoryComment("color", "Color Range: 0-255, uses default values if out of range");
-        gsWireBlockID = config.getBlock("Glowstone Wire Block ID", 4095).getInt();
+        gsWireBlockID = config.get("block","Glowstone Wire Block ID", 4095).getInt();
         gsWireColorR = config.get("color", "Wire Color Red", 255).getInt();
         gsWireColorG = config.get("color", "Wire Color Green", 255).getInt();
         gsWireColorB = config.get("color", "Wire Color Blue", 0).getInt();
         
         //validate
         if(gsWireBlockID > 4095 || gsWireBlockID < 0) {
-        	FMLLog.log(Level.WARNING, "Glowstone Wire: Invalid Block ID, resetting to default");
+        	FMLLog.warning("Glowstone Wire: Invalid Block ID, resetting to default");
             config.removeCategory(config.getCategory("block"));
-            gsWireBlockID = config.getBlock("Glowstone Wire Block ID", 4095).getInt();
+            gsWireBlockID = config.get("block","Glowstone Wire Block ID", 4095).getInt();
         }
         
+        /*
         if(Block.blocksList[gsWireBlockID] != null) {
-        	FMLLog.log(Level.WARNING, "Glowstone Wire: Block ID exists, resetting to default");
+        	FMLLog.warning("Glowstone Wire: Block ID exists, resetting to default");
             config.removeCategory(config.getCategory("block"));
-            gsWireBlockID = config.getBlock("Glowstone Wire Block ID", 4095).getInt();
+            gsWireBlockID = config.get("block","Glowstone Wire Block ID", 4095).getInt();
         }
+        */
         
         if(gsWireColorG > 255 || gsWireColorG < 0 ||
            gsWireColorR > 255 || gsWireColorR < 0 ||
            gsWireColorB > 255 || gsWireColorB < 0)
         { //use default if ANY value is out of range.
-            FMLLog.log(Level.WARNING, "Glowstone Wire: Invalid colors, resetting to default");
+        	FMLLog.warning("Glowstone Wire: Invalid colors, resetting to default");
             config.removeCategory(config.getCategory("color"));
             config.addCustomCategoryComment("color", "Color Range: 0-255, uses default values if out of range");
             gsWireColorR = config.get("color", "Wire Color Red", 255).getInt();
@@ -64,7 +62,7 @@ public class GlowstoneWireMod {
         }
         config.save();
         
-        glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireBlockID, gsWireColorR, gsWireColorG, gsWireColorB)).setHardness(0.0F).setLightValue(0.625F).setStepSound(Block.soundPowderFootstep).setUnlocalizedName("glowstoneDust");
+        glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB))/*.setHardness(0.0F).setLightValue(0.625F).setStepSound(Block.soundPowderFootstep).setUnlocalizedName("glowstoneDust")*/;
     }
     @EventHandler
     public void load(FMLInitializationEvent event) {

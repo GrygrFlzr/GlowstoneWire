@@ -1,21 +1,22 @@
 package grygrflzr.mods.glowstonewire;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class GlowstoneWireEventHook {
-    @ForgeSubscribe
+    @SubscribeEvent
     public void playerInteract(PlayerInteractEvent event) {
-        if(event.action == event.action.RIGHT_CLICK_BLOCK) {
+        if(event.action == Action.RIGHT_CLICK_BLOCK) {
             if(event.entityPlayer.inventory.getCurrentItem() != null &&
-                event.entityPlayer.inventory.getCurrentItem().itemID == Item.glowstone.itemID) {
+                event.entityPlayer.inventory.getCurrentItem().getItem() == Items.glowstone_dust) {
                 int x = event.x;
                 int y = event.y;
                 int z = event.z;
                 int face = event.face;
-                if(event.entity.worldObj.getBlockId(x, y, z) != Block.snow.blockID) {
+                if(event.entity.worldObj.func_147439_a/*getBlock?*/(x, y, z) != Blocks.snow_layer) {
                     if (face == 0)
                         --y;
                     if (face == 1)
@@ -29,16 +30,16 @@ public class GlowstoneWireEventHook {
                     if (face == 5)
                         ++x;
                 }
-                if(!event.entity.worldObj.isAirBlock(x, y, z))
-                    if(event.entity.worldObj.getBlockId(x, y, z) != Block.snow.blockID)
+                if(!event.entity.worldObj.func_147437_c/*isAirBlock*/(x, y, z))
+                    if(event.entity.worldObj.func_147439_a/*getBlock?*/(x, y, z) != Blocks.snow_layer)
                         return;
                 if(!event.entityPlayer.canPlayerEdit(x, y, z, face, event.entityPlayer.inventory.getCurrentItem()))
                     return;
                 else
-                    if(GlowstoneWireMod.glowstoneWire.canPlaceBlockAt(event.entity.worldObj, x, y, z)) {
+                    if(GlowstoneWireMod.glowstoneWire.func_149742_c/*canPlaceBlockAt*/(event.entity.worldObj, x, y, z)) {
                         if(!event.entityPlayer.capabilities.isCreativeMode)
                             --event.entityPlayer.inventory.getCurrentItem().stackSize;
-                        event.entity.worldObj.setBlock(x, y, z, GlowstoneWireMod.glowstoneWire.blockID);
+                        event.entity.worldObj.func_147449_b/*setBlock*/(x, y, z, GlowstoneWireMod.glowstoneWire);
                     }
             }
         }
