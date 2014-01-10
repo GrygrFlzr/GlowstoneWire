@@ -45,12 +45,12 @@ public class GlowstoneWireMod {
         }
         config.save();
         
-        glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB)).func_149711_c/*setHardness*/(0.0F).func_149711_c/*setLightValue*/(0.625F).func_149672_a/*setStepSound*/(Block.field_149769_e/*soundPowderFootstep*/).func_149663_c/*setUnlocalizedName*/("glowstoneDust");
+        glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB)).func_149711_c/*setHardness*/(0.0F).func_149715_a/*setLightValue*/(0.625F).func_149672_a/*setStepSound*/(Block.field_149769_e/*soundPowderFootstep*/).func_149663_c/*setUnlocalizedName*/("glowstoneDust");
+        GameRegistry.registerBlock(glowstoneWire, "glowstoneDust");
+        proxy.registerRenderInformation();
     }
     @EventHandler
     public void load(FMLInitializationEvent event) {
-        GameRegistry.registerBlock(glowstoneWire, "glowstoneDust");
         MinecraftForge.EVENT_BUS.register(new GlowstoneWireEventHook());
-        proxy.registerRenderInformation();
     }
 }
