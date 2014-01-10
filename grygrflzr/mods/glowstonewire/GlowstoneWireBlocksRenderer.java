@@ -112,6 +112,46 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
         {
             i1 = 2;
         }
+        if(!renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 - 1, par4).func_149637_q()/*isBlockNormalCube*/)
+        {
+        	i1 = 3;
+        }
+        
+        //Vertical Wiring customization
+        boolean vertOverride = false, vertNegX = false, vertPosX = false, vertNegZ = false, vertPosZ = false;
+        if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4) == GlowstoneWireMod.glowstoneWire || !renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 - 1, par4).func_149637_q()/*isBlockNormalCube*/)
+        {
+        	vertOverride = true;
+        	boolean hasBlockBelow = renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 - 1, par4).func_149637_q()/*isBlockNormalCube*/;
+            //boolean validBlockBelow = hasBlockBelow && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 + 1, par3, par4) != GlowstoneWireMod.glowstoneWire;
+        	if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149637_q()/*isBlockNormalCube*/)
+            {
+            	vertNegX = true;
+            	if(hasBlockBelow)
+            		i1 = 1;
+            }
+
+            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149637_q()/*isBlockNormalCube*/)
+            {
+            	vertPosX = true;
+            	if(hasBlockBelow)
+            		i1 = 1;
+            }
+
+            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149637_q()/*isBlockNormalCube*/)
+            {
+                vertNegZ = true;
+            	if(hasBlockBelow)
+            		i1 = 2;
+            }
+
+            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149637_q()/*isBlockNormalCube*/)
+            {
+                vertPosZ = true;
+            	if(hasBlockBelow)
+            		i1 = 2;
+            }
+        }
 
         if (i1 == 0)
         {
@@ -183,7 +223,7 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
             tessellator.addVertexWithUV((double)f5, (double)par3 + 0.015625D, (double)f7, (double)icon3.getMinU(), (double)icon3.getMinV());
             tessellator.addVertexWithUV((double)f5, (double)par3 + 0.015625D, (double)f8, (double)icon3.getMinU(), (double)icon3.getMaxV());
         }
-        else
+        else if (i1 == 2)
         {
             tessellator.addVertexWithUV((double)f6, (double)par3 + 0.015625D, (double)f8, (double)icon1.getMaxU(), (double)icon1.getMaxV());
             tessellator.addVertexWithUV((double)f6, (double)par3 + 0.015625D, (double)f7, (double)icon1.getMinU(), (double)icon1.getMaxV());
@@ -196,11 +236,11 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
             tessellator.addVertexWithUV((double)f5, (double)par3 + 0.015625D, (double)f8, (double)icon3.getMaxU(), (double)icon3.getMinV());
         }
 
-        if (!renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4).func_149637_q()/*isBlockNormalCube*/)
+        if (vertOverride || !renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4).func_149637_q()/*isBlockNormalCube*/)
         {
             float f9 = 0.021875F;
 
-            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 - 1, par3 + 1, par4) == GlowstoneWireMod.glowstoneWire)
+            if (vertNegX || renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 - 1, par3 + 1, par4) == GlowstoneWireMod.glowstoneWire)
             {
                 tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
                 tessellator.addVertexWithUV((double)par2 + 0.015625D, (double)((float)(par3 + 1) + 0.021875F), (double)(par4 + 1), (double)icon1.getMaxU(), (double)icon1.getMinV());
@@ -214,7 +254,7 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
                 tessellator.addVertexWithUV((double)par2 + 0.015625D, (double)((float)(par3 + 1) + 0.021875F), (double)(par4 + 0), (double)icon3.getMaxU(), (double)icon3.getMaxV());
             }
 
-            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 + 1, par3 + 1, par4) == GlowstoneWireMod.glowstoneWire)
+            if (vertPosX || renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2 + 1, par3 + 1, par4) == GlowstoneWireMod.glowstoneWire)
             {
                 tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
                 tessellator.addVertexWithUV((double)(par2 + 1) - 0.015625D, (double)(par3 + 0), (double)(par4 + 1), (double)icon1.getMinU(), (double)icon1.getMaxV());
@@ -228,7 +268,7 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
                 tessellator.addVertexWithUV((double)(par2 + 1) - 0.015625D, (double)(par3 + 0), (double)(par4 + 0), (double)icon3.getMinU(), (double)icon3.getMinV());
             }
 
-            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4 - 1) == GlowstoneWireMod.glowstoneWire)
+            if (vertNegZ || renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4 - 1) == GlowstoneWireMod.glowstoneWire)
             {
                 tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
                 tessellator.addVertexWithUV((double)(par2 + 1), (double)(par3 + 0), (double)par4 + 0.015625D, (double)icon1.getMinU(), (double)icon1.getMaxV());
@@ -242,7 +282,7 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
                 tessellator.addVertexWithUV((double)(par2 + 0), (double)(par3 + 0), (double)par4 + 0.015625D, (double)icon3.getMinU(), (double)icon3.getMinV());
             }
 
-            if (renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4 + 1) == GlowstoneWireMod.glowstoneWire)
+            if (vertPosZ || renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149637_q()/*isBlockNormalCube*/ && renderer.field_147845_a/*blockAccess*/.func_147439_a/*getBlock*/(par2, par3 + 1, par4 + 1) == GlowstoneWireMod.glowstoneWire)
             {
                 tessellator.setColorOpaque_F(f * f2, f * f3, f * f4);
                 tessellator.addVertexWithUV((double)(par2 + 1), (double)((float)(par3 + 1) + 0.021875F), (double)(par4 + 1) - 0.015625D, (double)icon1.getMaxU(), (double)icon1.getMinV());

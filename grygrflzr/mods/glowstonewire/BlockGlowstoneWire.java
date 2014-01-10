@@ -107,7 +107,8 @@ public class BlockGlowstoneWire extends Block
      */
     public boolean func_149742_c/*canPlaceBlockAt*/(World par1World, int x, int y, int z)
     {
-        return World.func_147466_a/*doesBlockHaveSolidTopSurface*/(par1World, x, y - 1, z) || par1World.func_147439_a/*getBlock*/(x, y - 1, z) == Blocks.glowstone;
+    	return true;
+        //return World.func_147466_a/*doesBlockHaveSolidTopSurface*/(par1World, x, y - 1, z) || par1World.func_147439_a/*getBlock*/(x, y - 1, z) == Blocks.glowstone;
     }
 
     /**
