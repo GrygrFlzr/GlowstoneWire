@@ -12,8 +12,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = "GrygrFlzr_GlowstoneWire", name = "Glowstone Wire", version = "build 111")
+@Mod(modid = GlowstoneWireMod.MODID, name = GlowstoneWireMod.NAME, version = GlowstoneWireMod.VERSION)
 public class GlowstoneWireMod {
+    public static final String MODID = "GrygrFlzr_GlowstoneWire";
+    public static final String NAME = "Glowstone Wire";
+    public static final String VERSION = "build 111";
+    
     public static Block glowstoneWire;
     public static int gsWireColorR = 255;
     public static int gsWireColorG = 255;
@@ -46,7 +50,7 @@ public class GlowstoneWireMod {
         config.save();
         
         glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB)).func_149711_c/*setHardness*/(0.0F).func_149715_a/*setLightValue*/(0.625F).func_149672_a/*setStepSound*/(Block.field_149769_e/*soundPowderFootstep*/).func_149663_c/*setUnlocalizedName*/("glowstoneDust");
-        GameRegistry.registerBlock(glowstoneWire, "glowstoneDust");
+        GameRegistry.registerBlock(glowstoneWire, "glowstone_wire");
         proxy.registerRenderInformation();
     }
     @EventHandler
