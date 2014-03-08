@@ -7,7 +7,7 @@
   "mcversion": "${mcversion}",
   "url": "http://www.minecraftforum.net/topic/944547-",
   "updateUrl": "",
-  "authors": [
+  "authorList": [
     "GrygrFlzr"
   ],
   "credits": "By GrygrFlzr, based on an idea by AkaSquirticus",
