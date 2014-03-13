@@ -49,7 +49,7 @@ public class GlowstoneWireMod {
         }
         config.save();
         
-        glowstoneWire = (BlockGlowstoneWire)(new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB)).setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust");
+        glowstoneWire = new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB).setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust");
         GameRegistry.registerBlock(glowstoneWire, "glowstone_wire");
         proxy.registerRenderInformation();
     }
