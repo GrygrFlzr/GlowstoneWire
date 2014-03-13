@@ -16,7 +16,7 @@ public class GlowstoneWireEventHook {
                 int y = event.y;
                 int z = event.z;
                 int face = event.face;
-                if(event.entity.worldObj.func_147439_a/*getBlock?*/(x, y, z) != Blocks.snow_layer) {
+                if(event.entity.worldObj.getBlock(x, y, z) != Blocks.snow_layer) {
                     if (face == 0)
                         --y;
                     if (face == 1)
@@ -30,16 +30,16 @@ public class GlowstoneWireEventHook {
                     if (face == 5)
                         ++x;
                 }
-                if(!event.entity.worldObj.func_147437_c/*isAirBlock*/(x, y, z))
-                    if(event.entity.worldObj.func_147439_a/*getBlock?*/(x, y, z) != Blocks.snow_layer)
+                if(!event.entity.worldObj.isAirBlock(x, y, z))
+                    if(event.entity.worldObj.getBlock(x, y, z) != Blocks.snow_layer)
                         return;
                 if(!event.entityPlayer.canPlayerEdit(x, y, z, face, event.entityPlayer.inventory.getCurrentItem()))
                     return;
                 else
-                    if(GlowstoneWireMod.glowstoneWire.func_149742_c/*canPlaceBlockAt*/(event.entity.worldObj, x, y, z)) {
+                    if(GlowstoneWireMod.glowstoneWire.canPlaceBlockAt(event.entity.worldObj, x, y, z)) {
                         if(!event.entityPlayer.capabilities.isCreativeMode)
                             --event.entityPlayer.inventory.getCurrentItem().stackSize;
-                        event.entity.worldObj.func_147449_b/*setBlock*/(x, y, z, GlowstoneWireMod.glowstoneWire);
+                        event.entity.worldObj.setBlock(x, y, z, GlowstoneWireMod.glowstoneWire);
                     }
             }
         }

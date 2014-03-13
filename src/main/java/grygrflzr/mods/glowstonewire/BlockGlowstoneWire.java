@@ -47,10 +47,10 @@ public class BlockGlowstoneWire extends Block
     
     public BlockGlowstoneWire(int r, int g, int b)
     {
-        super(Material.field_151594_q/*circuits*/);
-        this.func_149676_a/*setBlockBounds*/(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
-        this.func_149649_H()/*disableStats*/;
-        this.func_149658_d/*setTextureName*/("redstone_dust");
+        super(Material.circuits);
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+        this.disableStats();
+        this.setBlockTextureName("redstone_dust");
         wireColorR = r;
         wireColorG = g;
         wireColorB = b;
@@ -61,7 +61,7 @@ public class BlockGlowstoneWire extends Block
      * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
      * cleared to be reused)
      */
-    public AxisAlignedBB func_149668_a/*getCollisionBoundingBoxFromPool*/(World par1World, int par2, int par3, int par4)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         return null;
     }
@@ -70,7 +70,7 @@ public class BlockGlowstoneWire extends Block
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean func_149662_c/*isOpaqueCube*/()
+    public boolean isOpaqueCube()
     {
         return false;
     }
@@ -78,7 +78,7 @@ public class BlockGlowstoneWire extends Block
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean func_149686_d/*renderAsNormalBlock*/()
+    public boolean renderAsNormalBlock()
     {
         return false;
     }
@@ -86,7 +86,7 @@ public class BlockGlowstoneWire extends Block
     /**
      * The type of render function that is called for this block
      */
-    public int func_149645_b/*getRenderType*/()
+    public int getRenderType()
     {
         return ClientProxy.glowstoneWireRenderID;
     }
@@ -97,7 +97,7 @@ public class BlockGlowstoneWire extends Block
      * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
      * when first determining what to render.
      */
-    public int func_149720_d/*colorMultiplier*/(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         return wireColor;
     }
@@ -105,29 +105,29 @@ public class BlockGlowstoneWire extends Block
     /**
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
-    public boolean func_149742_c/*canPlaceBlockAt*/(World par1World, int x, int y, int z)
+    public boolean canPlaceBlockAt(World par1World, int x, int y, int z)
     {
-        return World.func_147466_a/*doesBlockHaveSolidTopSurface*/(par1World, x, y - 1, z) || par1World.func_147439_a/*getBlock*/(x, y - 1, z) == Blocks.glowstone;
+        return World.doesBlockHaveSolidTopSurface(par1World, x, y - 1, z) || par1World.getBlock(x, y - 1, z) == Blocks.glowstone;
     }
 
     /**
      * Sets the strength of the wire current (0-15) for this block based on neighboring blocks and propagates to
      * neighboring redstone wires
      */
-    private void func_150177_e/*updateAndPropagateCurrentStrength*/(World par1World, int par2, int par3, int par4)
+    private void updateAndPropagateCurrentStrength(World par1World, int par2, int par3, int par4)
     {
-        //this.func_150175_a/*calculateCurrentChanges*/(par1World, par2, par3, par4, par2, par3, par4);
+        //this.calculateCurrentChanges(par1World, par2, par3, par4, par2, par3, par4);
         ArrayList arraylist = new ArrayList(this.blocksNeedingUpdate);
         this.blocksNeedingUpdate.clear();
 
         for (int l = 0; l < arraylist.size(); ++l)
         {
             ChunkPosition chunkposition = (ChunkPosition)arraylist.get(l);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(chunkposition.field_151329_a/*x*/, chunkposition.field_151327_b/*y*/, chunkposition.field_151328_c/*z*/, this);
+            par1World.notifyBlocksOfNeighborChange(chunkposition.chunkPosX, chunkposition.chunkPosY, chunkposition.chunkPosZ, this);
         }
     }
 
-    private void func_150175_a/*calculateCurrentChanges*/(World par1World, int par2, int par3, int par4, int par5, int par6, int par7)
+    private void calculateCurrentChanges(World par1World, int par2, int par3, int par4, int par5, int par6, int par7)
     {
         
     }
@@ -136,71 +136,71 @@ public class BlockGlowstoneWire extends Block
      * Calls World.notifyBlocksOfNeighborChange() for all neighboring blocks, but only if the given block is a redstone
      * wire.
      */
-    private void func_150172_m/*notifyWireNeighborsOfNeighborChange*/(World par1World, int par2, int par3, int par4)
+    private void notifyWireNeighborsOfNeighborChange(World par1World, int par2, int par3, int par4)
     {
-        if (par1World.func_147439_a/*getBlock*/(par2, par3, par4) == this)
+        if (par1World.getBlock(par2, par3, par4) == this)
         {
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2 - 1, par3, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2 + 1, par3, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3, par4 - 1, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3, par4 + 1, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3 - 1, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3 + 1, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
         }
     }
 
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void func_149726_b/*onBlockAdded*/(World par1World, int par2, int par3, int par4)
+    public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
-        super.func_149726_b/*onBlockAdded*/(par1World, par2, par3, par4);
+        super.onBlockAdded(par1World, par2, par3, par4);
 
         if (!par1World.isRemote)
         {
-            this.func_150177_e/*updateAndPropagateCurrentStrength*/(par1World, par2, par3, par4);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3 + 1, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3 - 1, par4, this);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 - 1, par3, par4);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 + 1, par3, par4);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3, par4 - 1);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3, par4 + 1);
+            this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
+            par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3, par4);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3, par4);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3, par4 - 1);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3, par4 + 1);
 
-            if (par1World.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2 - 1, par3, par4).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 - 1, par3 + 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3 + 1, par4);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 - 1, par3 - 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3 - 1, par4);
             }
 
-            if (par1World.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2 + 1, par3, par4).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 + 1, par3 + 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3 + 1, par4);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 + 1, par3 - 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3 - 1, par4);
             }
 
-            if (par1World.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2, par3, par4 - 1).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 + 1, par4 - 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 + 1, par4 - 1);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 - 1, par4 - 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 - 1, par4 - 1);
             }
 
-            if (par1World.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2, par3, par4 + 1).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 + 1, par4 + 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 + 1, par4 + 1);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 - 1, par4 + 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 - 1, par4 + 1);
             }
         }
     }
@@ -208,58 +208,58 @@ public class BlockGlowstoneWire extends Block
     /**
      * ejects contained items into the world, and notifies neighbours of an update, as appropriate
      */
-    public void func_149749_a/*breakBlock*/(World par1World, int par2, int par3, int par4, Block par5, int par6)
+    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
     {
-        super.func_149749_a/*breakBlock*/(par1World, par2, par3, par4, par5, par6);
+        super.breakBlock(par1World, par2, par3, par4, par5, par6);
 
         if (!par1World.isRemote)
         {
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3 + 1, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3 - 1, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2 + 1, par3, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2 - 1, par3, par4, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3, par4 + 1, this);
-            par1World.func_147459_d/*notifyBlocksOfNeighborChange*/(par2, par3, par4 - 1, this);
-            this.func_150177_e/*updateAndPropagateCurrentStrength*/(par1World, par2, par3, par4);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 - 1, par3, par4);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 + 1, par3, par4);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3, par4 - 1);
-            this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3, par4 + 1);
+            par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this);
+            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this);
+            this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3, par4);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3, par4);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3, par4 - 1);
+            this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3, par4 + 1);
 
-            if (par1World.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2 - 1, par3, par4).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 - 1, par3 + 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3 + 1, par4);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 - 1, par3 - 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3 - 1, par4);
             }
 
-            if (par1World.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2 + 1, par3, par4).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 + 1, par3 + 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3 + 1, par4);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2 + 1, par3 - 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3 - 1, par4);
             }
 
-            if (par1World.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2, par3, par4 - 1).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 + 1, par4 - 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 + 1, par4 - 1);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 - 1, par4 - 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 - 1, par4 - 1);
             }
 
-            if (par1World.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149721_r()/*isBlockNormalCube*/)
+            if (par1World.getBlock(par2, par3, par4 + 1).isNormalCube())
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 + 1, par4 + 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 + 1, par4 + 1);
             }
             else
             {
-                this.func_150172_m/*notifyWireNeighborsOfNeighborChange*/(par1World, par2, par3 - 1, par4 + 1);
+                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 - 1, par4 + 1);
             }
         }
     }
@@ -268,9 +268,9 @@ public class BlockGlowstoneWire extends Block
      * Returns the current strength at the specified block if it is greater than the passed value, or the passed value
      * otherwise. Signature: (world, x, y, z, strength)
      */
-    private int func_150178_a/*getMaxCurrentStrength*/(World par1World, int par2, int par3, int par4, int par5)
+    private int getMaxCurrentStrength(World par1World, int par2, int par3, int par4, int par5)
     {
-        if (par1World.func_147439_a/*getBlock*/(par2, par3, par4) != this)
+        if (par1World.getBlock(par2, par3, par4) != this)
         {
             return par5;
         }
@@ -285,30 +285,30 @@ public class BlockGlowstoneWire extends Block
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
      */
-    public void func_149695_a/*onNeighborBlockChange*/(World par1World, int par2, int par3, int par4, Block par5)
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5)
     {
         if (!par1World.isRemote)
         {
-            boolean flag = this.func_149742_c/*canPlaceBlockAt*/(par1World, par2, par3, par4);
+            boolean flag = this.canPlaceBlockAt(par1World, par2, par3, par4);
 
             if (flag)
             {
-                this.func_150177_e/*updateAndPropagateCurrentStrength*/(par1World, par2, par3, par4);
+                this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
             }
             else
             {
-                this.func_149697_b/*dropBlockAsItem*/(par1World, par2, par3, par4, 0, 0);
-                par1World.func_147468_f/*setBlockToAir*/(par2, par3, par4);
+                this.dropBlockAsItem(par1World, par2, par3, par4, 0, 0);
+                par1World.setBlockToAir(par2, par3, par4);
             }
 
-            super.func_149695_a/*onNeighborBlockChange*/(par1World, par2, par3, par4, par5);
+            super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
         }
     }
 
     /**
      * Returns the ID of the items to drop on destruction.
      */
-    public Item func_149650_a/*itemDropped*/(int par1, Random par2Random, int par3)
+    public Item itemDropped(int par1, Random par2Random, int par3)
     {
         return Items.glowstone_dust;
     }
@@ -317,7 +317,7 @@ public class BlockGlowstoneWire extends Block
      * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int func_149748_c/*isProvidingStrongPower*/(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return 0;
     }
@@ -327,9 +327,9 @@ public class BlockGlowstoneWire extends Block
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int func_149709_b/*isProvidingWeakPower*/(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        if (par1IBlockAccess.func_147439_a/*getBlock*/(par2, par3, par4) != GlowstoneWireMod.glowstoneWire)
+        if (par1IBlockAccess.getBlock(par2, par3, par4) != GlowstoneWireMod.glowstoneWire)
         {
             return 0;
         }
@@ -351,29 +351,29 @@ public class BlockGlowstoneWire extends Block
             }
             else
             {
-                boolean flag = func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2 - 1, par3, par4, 1) || !par1IBlockAccess.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2 - 1, par3 - 1, par4, -1);
-                boolean flag1 = func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2 + 1, par3, par4, 3) || !par1IBlockAccess.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2 + 1, par3 - 1, par4, -1);
-                boolean flag2 = func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2, par3, par4 - 1, 2) || !par1IBlockAccess.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2, par3 - 1, par4 - 1, -1);
-                boolean flag3 = func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2, par3, par4 + 1, 0) || !par1IBlockAccess.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2, par3 - 1, par4 + 1, -1);
+                boolean flag = isPoweredOrRepeater(par1IBlockAccess, par2 - 1, par3, par4, 1) || !par1IBlockAccess.getBlock(par2 - 1, par3, par4).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2 - 1, par3 - 1, par4, -1);
+                boolean flag1 = isPoweredOrRepeater(par1IBlockAccess, par2 + 1, par3, par4, 3) || !par1IBlockAccess.getBlock(par2 + 1, par3, par4).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2 + 1, par3 - 1, par4, -1);
+                boolean flag2 = isPoweredOrRepeater(par1IBlockAccess, par2, par3, par4 - 1, 2) || !par1IBlockAccess.getBlock(par2, par3, par4 - 1).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2, par3 - 1, par4 - 1, -1);
+                boolean flag3 = isPoweredOrRepeater(par1IBlockAccess, par2, par3, par4 + 1, 0) || !par1IBlockAccess.getBlock(par2, par3, par4 + 1).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2, par3 - 1, par4 + 1, -1);
 
-                if (!par1IBlockAccess.func_147439_a/*getBlock*/(par2, par3 + 1, par4).func_149721_r()/*isBlockNormalCube*/)
+                if (!par1IBlockAccess.getBlock(par2, par3 + 1, par4).isNormalCube())
                 {
-                    if (par1IBlockAccess.func_147439_a/*getBlock*/(par2 - 1, par3, par4).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2 - 1, par3 + 1, par4, -1))
+                    if (par1IBlockAccess.getBlock(par2 - 1, par3, par4).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2 - 1, par3 + 1, par4, -1))
                     {
                         flag = true;
                     }
 
-                    if (par1IBlockAccess.func_147439_a/*getBlock*/(par2 + 1, par3, par4).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2 + 1, par3 + 1, par4, -1))
+                    if (par1IBlockAccess.getBlock(par2 + 1, par3, par4).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2 + 1, par3 + 1, par4, -1))
                     {
                         flag1 = true;
                     }
 
-                    if (par1IBlockAccess.func_147439_a/*getBlock*/(par2, par3, par4 - 1).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2, par3 + 1, par4 - 1, -1))
+                    if (par1IBlockAccess.getBlock(par2, par3, par4 - 1).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2, par3 + 1, par4 - 1, -1))
                     {
                         flag2 = true;
                     }
 
-                    if (par1IBlockAccess.func_147439_a/*getBlock*/(par2, par3, par4 + 1).func_149721_r()/*isBlockNormalCube*/ && func_150176_g/*isPoweredOrRepeater*/(par1IBlockAccess, par2, par3 + 1, par4 + 1, -1))
+                    if (par1IBlockAccess.getBlock(par2, par3, par4 + 1).isNormalCube() && isPoweredOrRepeater(par1IBlockAccess, par2, par3 + 1, par4 + 1, -1))
                     {
                         flag3 = true;
                     }
@@ -387,7 +387,7 @@ public class BlockGlowstoneWire extends Block
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
-    public boolean func_149744_f/*canProvidePower*/()
+    public boolean canProvidePower()
     {
         return false;
     }
@@ -396,9 +396,9 @@ public class BlockGlowstoneWire extends Block
      * Returns true if redstone wire can connect to the specified block. Params: World, X, Y, Z, side (not a normal
      * notch-side, this can be 0, 1, 2, 3 or -1)
      */
-    public static boolean func_150174_f/*isPowerProviderOrWire*/(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
+    public static boolean isPowerProviderOrWire(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
     {
-        return par0IBlockAccess.func_147439_a/*getBlock*/(par1, par2, par3) == GlowstoneWireMod.glowstoneWire;
+        return par0IBlockAccess.getBlock(par1, par2, par3) == GlowstoneWireMod.glowstoneWire;
     }
 
     @SideOnly(Side.CLIENT)
@@ -406,7 +406,7 @@ public class BlockGlowstoneWire extends Block
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void func_149734_b/*randomDisplayTick*/(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         double d0 = (double)par2 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
         double d1 = (double)((float)par3 + 0.0625F);
@@ -420,9 +420,9 @@ public class BlockGlowstoneWire extends Block
      * Returns true if the block coordinate passed can provide power, or is a redstone wire, or if its a repeater that
      * is powered.
      */
-    public static boolean func_150176_g/*isPoweredOrRepeater*/(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
+    public static boolean isPoweredOrRepeater(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, int par4)
     {
-        return par0IBlockAccess.func_147439_a/*getBlock*/(par1, par2, par3) == GlowstoneWireMod.glowstoneWire;
+        return par0IBlockAccess.getBlock(par1, par2, par3) == GlowstoneWireMod.glowstoneWire;
     }
 
     @SideOnly(Side.CLIENT)
@@ -430,7 +430,7 @@ public class BlockGlowstoneWire extends Block
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public Item func_149694_d/*itemPicked*/(World par1World, int par2, int par3, int par4)
+    public Item itemPicked(World par1World, int par2, int par3, int par4)
     {
         return Items.glowstone_dust;
     }
@@ -441,17 +441,17 @@ public class BlockGlowstoneWire extends Block
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
      * is the only chance you get to register icons.
      */
-    public void func_149651_a/*registerIcons*/(IIconRegister par1IconRegister)
+    public void registerIcons(IIconRegister par1IconRegister)
     {
-        BlockGlowstoneWire.field_94413_c = par1IconRegister.registerIcon(this.func_149641_N/*getTextureName*/() + "_" + "cross");
-        BlockGlowstoneWire.field_94410_cO = par1IconRegister.registerIcon(this.func_149641_N/*getTextureName*/() + "_" + "line");
-        BlockGlowstoneWire.field_94411_cP = par1IconRegister.registerIcon(this.func_149641_N/*getTextureName*/() + "_" + "cross_overlay");
-        BlockGlowstoneWire.field_94412_cQ = par1IconRegister.registerIcon(this.func_149641_N/*getTextureName*/() + "_" + "line_overlay");
-        this.field_149761_L/*blockIcon*/ = BlockGlowstoneWire.field_94413_c;
+        BlockGlowstoneWire.field_94413_c = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
+        BlockGlowstoneWire.field_94410_cO = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
+        BlockGlowstoneWire.field_94411_cP = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
+        BlockGlowstoneWire.field_94412_cQ = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
+        this.blockIcon = BlockGlowstoneWire.field_94413_c;
     }
 
     @SideOnly(Side.CLIENT)
-    public static IIcon func_150173_e(String par0Str)
+    public static IIcon getRedstoneWireIcon(String par0Str)
     {
         return par0Str.equals("cross") ? field_94413_c : (par0Str.equals("line") ? field_94410_cO : (par0Str.equals("cross_overlay") ? field_94411_cP : (par0Str.equals("line_overlay") ? field_94412_cQ : null)));
     }
