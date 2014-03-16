@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.0.0.112"
-group= "grygrflzr.gswire" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "grygrflzr.mods.glowstonewire" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "GlowstoneWire-1.7.2"
 
 minecraft {
