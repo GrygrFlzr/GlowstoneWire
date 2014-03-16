@@ -1,6 +1,6 @@
 [
 {
-  "modid": "GrygrFlzr_GlowstoneWire",
+  "modid": "gswire",
   "name": "Glowstone Wire",
   "description": "Adds aesthetic placeable glowstone wire.",
   "version": "${version}",
@@ -16,6 +16,26 @@
   ],
   "parent":"",
   "dependencies": [
+  ]
+},
+{
+  "modid": "GrygrFlzr_GlowstoneWire",
+  "name": "Glowstone Wire Migration",
+  "description": "Dummy Mod. Migrates old glowstone wire blocks.\nRequired to update from 1.0.0.111 to 1.0.0.112+",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "http://www.minecraftforum.net/topic/944547-",
+  "updateUrl": "",
+  "authorList": [
+    "GrygrFlzr"
+  ],
+  "credits": "Migration concept by fry",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+    "gswire"
   ]
 }
 ]

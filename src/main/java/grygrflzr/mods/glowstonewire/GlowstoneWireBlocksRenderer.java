@@ -260,11 +260,11 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
         return true;
     }
 
-	@Override
-	public boolean shouldRender3DInInventory(int modelId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        // TODO Auto-generated method stub
+        return false;
+    }
     
     
 }
