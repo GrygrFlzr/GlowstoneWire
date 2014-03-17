@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -28,9 +30,10 @@ public class MigrateMod {
     public static final String VERSION = GlowstoneWireMod.VERSION;
     
     /**
-     * The migration version to compare to
+     * The migration version to compare to<br>
+     * 0 = No migration
      */
-    public static final int MIGRATEVERSION = 1;
+    public static int MIGRATEVERSION = 0;
     /**
      * A map of chunks mapped by world<br>
      * Separate dimensions can have identical chunk coordinates
@@ -54,6 +57,9 @@ public class MigrateMod {
     }
     @EventHandler
     public void load(FMLInitializationEvent event) {
+        //Dynamically assign Migrate Version based on remap list
+        MIGRATEVERSION = remap.hashCode();
+        FMLLog.info("Migrate Hash %d", MIGRATEVERSION);
         //Defer event hook to init to allow adding to remap on preinit
         MinecraftForge.EVENT_BUS.register(new MigrateEventHook());
     }
