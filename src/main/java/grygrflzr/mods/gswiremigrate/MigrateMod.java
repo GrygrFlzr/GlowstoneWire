@@ -3,19 +3,17 @@ package grygrflzr.mods.gswiremigrate;
 import grygrflzr.mods.glowstonewire.GlowstoneWireMod;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -26,33 +24,106 @@ public class MigrateMod {
     public static final String VERSION = GlowstoneWireMod.VERSION;
     
     public static final int MIGRATEVERSION = 1;
-    //public static HashSet dirtyChunks = new HashSet();
-    public static Map<World, Map<ChunkCoordIntPair, Boolean>> chunks;
+    //Mapped by world - separate dimensions have identical chunk coordinates
+    public static Map<World, Map<ChunkCoordIntPair, Boolean>> chunks = new HashMap<World, Map<ChunkCoordIntPair, Boolean>>();
+    /**
+     * A map to replace one block with another
+     */
+    public static Map<Block, Block> remap = new HashMap<Block, Block>();
     public static byte blockIDs;
     
-    public static Block glowstoneWire;
+    public static Block dummyBlock;
 
-    @Instance("GrygrFlzr_GlowstoneWire")
+    @Instance(MODID)
     public static MigrateMod instance;
     @EventHandler
     public void preload(FMLPreInitializationEvent event) {
-        glowstoneWire = new BlockMigration().setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust");
-        GameRegistry.registerBlock(glowstoneWire, "glowstone_wire");
+        dummyBlock = new DummyBlock().setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust");
+        GameRegistry.registerBlock(dummyBlock, "glowstone_wire");
+        //GameRegistry.registerBlock(dummyBlock, ItemBlock.class, "glowstone_wire", "GrygrFlzr_GlowstoneWire");
+        remap.put(dummyBlock, GlowstoneWireMod.glowstoneWire);
+        
+        
+    }
+    @EventHandler
+    public void load(FMLInitializationEvent event) {
+        //Defer event hook to init to allow adding to remap on preinit
         MinecraftForge.EVENT_BUS.register(new MigrateEventHook());
     }
-    
-    //@EventHandler
-    public void mappingError(FMLMissingMappingsEvent event) {
-        //cpw.mods.fml.common.event.
-        FMLLog.info("BEGIN MAPPING OVERRIDE");
-        List<MissingMapping> missingList = event.get();
-        //FMLLog.info("Missing Mappings: %s", missing);
-        for(int i=0; i<missingList.size(); i++) {
-            MissingMapping missing = missingList.get(i);
-            //FMLLog.info("Missing Mapping for %s of type %s",missing.get(i).name,missing.get(i).type);
-            if(missing.name == MODID + ":glowstone_wire") {
-                
-            }
+    /**
+     * Registers a chunk to the chunk cache
+     * @param world The world the chunk resides in
+     * @param chunkCoord The chunk coordinates
+     * @param flagged
+     */
+    public static void registerChunk(World world, ChunkCoordIntPair chunkCoord, boolean flagged) {
+        if(chunks.isEmpty() || !chunks.containsKey(world)) {
+            chunks.put(world, new HashMap<ChunkCoordIntPair, Boolean>());
         }
+        chunks.get(world).put(chunkCoord, flagged);
+    }
+    /**
+     * Registers a chunk to the chunk cache
+     * @param world The world the chunk resides in
+     * @param chunk The chunk to register
+     * @param flagged
+     */
+    public static void registerChunk(World world, Chunk chunk, boolean flagged) {
+        registerChunk(world, chunk.getChunkCoordIntPair(), flagged);
+    }
+    /**
+     * Registers a chunk to the chunk cache
+     * @param chunk The chunk to register
+     * @param flagged
+     */
+    public static void registerChunk(Chunk chunk, boolean flagged) {
+        registerChunk(chunk.worldObj, chunk.getChunkCoordIntPair(), flagged);
+    }
+    /**
+     * Checks if the given chunk in the world is flagged
+     * @param world
+     * @param chunkCoord
+     * @return <b>TRUE</b> if chunk is flagged, <b>FALSE</b> otherwise
+     */
+    public static boolean isChunkFlagged(World world, ChunkCoordIntPair chunkCoord) {
+        if(chunks.isEmpty()) {
+            return false;
+        }
+        if(!chunks.containsKey(world)) {
+            return false;
+        }
+        if(chunks.get(world).isEmpty()) {
+            return false;
+        }
+        if(!chunks.get(world).containsKey(chunkCoord)) {
+            return false;
+        }
+        if(chunks.get(world).get(chunkCoord) == true) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Checks if the given chunk in the world is flagged
+     * @param world The world the chunk resides in
+     * @param chunk The chunk to check
+     * @return <b>TRUE</b> if chunk is flagged, <b>FALSE</b> otherwise
+     */
+    public static boolean isChunkFlagged(World world, Chunk chunk) {
+        return isChunkFlagged(world, chunk.getChunkCoordIntPair());
+    }
+    /**
+     * Checks if the given chunk in the world is flagged
+     * @param chunk The chunk to check
+     * @return <b>TRUE</b> if chunk is flagged, <b>FALSE</b> otherwise
+     */
+    public static boolean isChunkFlagged(Chunk chunk) {
+        return isChunkFlagged(chunk.worldObj, chunk.getChunkCoordIntPair());
+    }
+    /**
+     * Clears the chunk mapping
+     */
+    public static void clearChunks() {
+        chunks.clear();
     }
 }

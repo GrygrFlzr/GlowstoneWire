@@ -28,7 +28,7 @@ public class GlowstoneWireMod {
 
     @SidedProxy(clientSide = "grygrflzr.mods.glowstonewire.ClientProxy", serverSide = "grygrflzr.mods.glowstonewire.CommonProxy")
     public static CommonProxy proxy;
-    @Instance("gswire")
+    @Instance(MODID)
     public static GlowstoneWireMod instance;
     @EventHandler
     public void preload(FMLPreInitializationEvent event) {

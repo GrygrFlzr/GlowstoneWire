@@ -5,9 +5,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-public class BlockMigration extends Block {
+public class DummyBlock extends Block {
 
-    protected BlockMigration() {
+    protected DummyBlock() {
         super(Material.circuits);
     }
     

@@ -5,6 +5,7 @@ import grygrflzr.mods.glowstonewire.GlowstoneWireMod;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -17,13 +18,13 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class MigrateEventHook {
     /**
      * Called on world unload<br>
-     * Reset chunk cache
+     * Resets chunk cache
      */
     @SubscribeEvent
     public void worldUnload(WorldEvent.Unload event) {
         if(!event.world.isRemote) {
             //Reset chunk cache
-            MigrateMod.chunks.clear();
+            MigrateMod.clearChunks();
         }
     }
     
@@ -39,11 +40,12 @@ public class MigrateEventHook {
         
         if(!world.isRemote) {
             Chunk chunk = event.getChunk();
-            if(!MigrateMod.chunks.containsKey(world)) {
+            /*if(MigrateMod.chunks.isEmpty() || !MigrateMod.chunks.containsKey(world)) {
                 MigrateMod.chunks.put(world, new HashMap<ChunkCoordIntPair, Boolean>());
-            }
+            }*/
             //Assume chunk is clean first
-            MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), false);
+            MigrateMod.registerChunk(chunk, false);
+            //MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), false);
             
             int chunkMigrateVersion = event.getData().getCompoundTag("Level").getInteger(GlowstoneWireMod.MODID + ":MigrateVersion");
             //Compare Migrate Version - Future Proofing for possible migrations
@@ -53,9 +55,11 @@ public class MigrateEventHook {
                         for(int z=0; z<16; z++) {
                             //Limit iteration to highest block
                             for(int y=0; y<chunk.getHeightValue(x, z); y++) {
-                                if(chunk.getBlock(x, y, z) == MigrateMod.glowstoneWire) {
+                                //Find and replace block
+                                if(MigrateMod.remap.containsKey(chunk.getBlock(x, y, z))) {
                                     //Mark chunk in memory
-                                    MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), true);
+                                    MigrateMod.registerChunk(chunk, true);
+                                    //MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), true);
                                     FMLLog.info("Found dirty chunk (%d,%d)", chunk.xPosition, chunk.zPosition);
                                     //Break iteration
                                     break chunkIterate;
@@ -71,29 +75,38 @@ public class MigrateEventHook {
      * Handles Chunk Loading<br>
      * Replaces obsolete blocks in flagged chunks with new blocks
      */
-    //@SubscribeEvent
+    @SubscribeEvent
     public void chunkLoad(ChunkEvent.Load event) {
         World world = event.world;
         Chunk chunk = event.getChunk();
         
         if(!event.world.isRemote) {
-            //Check if chunk is marked
-            if(MigrateMod.chunks.get(world).get(chunk.getChunkCoordIntPair()) == true) {
-                for(int x=0; x<16; x++) {
-                    for(int z=0; z<16; z++) {
-                        //Limit iteration to highest block
-                        for(int y=0; y<chunk.getHeightValue(x, z); y++) {
-                            if(chunk.getBlock(x, y, z) == MigrateMod.glowstoneWire) {
-                                world.setBlock(chunk.xPosition*16+x, y, chunk.zPosition*16+z, GlowstoneWireMod.glowstoneWire);
-                                FMLLog.info("Replaced block (%d,%d,%d)", chunk.xPosition*16+x, y, chunk.zPosition*16+z);
+            //Check if world is not newly generated
+            if(!MigrateMod.chunks.get(world).isEmpty()) {
+                //Check if chunk is marked
+                if(MigrateMod.isChunkFlagged(chunk)) {
+                    for(int x=0; x<16; x++) {
+                        for(int z=0; z<16; z++) {
+                            //Limit iteration to highest block
+                            for(int y=0; y<chunk.getHeightValue(x, z); y++) {
+                                Block oldBlock = chunk.getBlock(x, y, z);
+                                //Find and replace block
+                                //TODO: Remove Map
+                                if(MigrateMod.remap.containsKey(oldBlock)) {
+                                    world.setBlock(chunk.xPosition*16+x, y, chunk.zPosition*16+z, MigrateMod.remap.get(oldBlock));
+                                    FMLLog.info(
+                                            "(%d,%d,%d) Replaced %s with %s", chunk.xPosition*16+x, y, chunk.zPosition*16+z,
+                                            oldBlock.getUnlocalizedName(), MigrateMod.remap.get(oldBlock).getUnlocalizedName());
+                                }
                             }
                         }
                     }
                 }
+                
+                //Mark as clean
+                MigrateMod.registerChunk(chunk, false);
+                //MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), false);
             }
-            
-            //Mark as clean
-            MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), false);
         }
     }
     
@@ -108,9 +121,13 @@ public class MigrateEventHook {
         Chunk chunk = event.getChunk();
         
         if(!world.isRemote) {
-            if(MigrateMod.chunks.get(world).get(chunk.getChunkCoordIntPair()) == false) {
-                //Flag chunk as clean
-                event.getData().getCompoundTag("Level").setInteger(GlowstoneWireMod.MODID + ":MigrateVersion",MigrateMod.MIGRATEVERSION);
+            //Assume chunk is clean first
+            event.getData().getCompoundTag("Level").setInteger(GlowstoneWireMod.MODID + ":MigrateVersion",MigrateMod.MIGRATEVERSION);
+            
+            //Check if chunk is marked as dirty
+            if(MigrateMod.isChunkFlagged(chunk)) {
+                //Remove flag
+                event.getData().getCompoundTag("Level").removeTag(GlowstoneWireMod.MODID + ":MigrateVersion");
             }
         }
     }
