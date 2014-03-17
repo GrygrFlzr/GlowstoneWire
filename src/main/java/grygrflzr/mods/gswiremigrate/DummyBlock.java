@@ -9,6 +9,8 @@ public class DummyBlock extends Block {
 
     protected DummyBlock() {
         super(Material.circuits);
+        setHardness(0.0F);
+        setStepSound(Block.soundTypeStone);
     }
     
     public void onBlockAdded(World world, int x, int y, int z) {

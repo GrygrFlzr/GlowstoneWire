@@ -40,12 +40,8 @@ public class MigrateEventHook {
         
         if(!world.isRemote) {
             Chunk chunk = event.getChunk();
-            /*if(MigrateMod.chunks.isEmpty() || !MigrateMod.chunks.containsKey(world)) {
-                MigrateMod.chunks.put(world, new HashMap<ChunkCoordIntPair, Boolean>());
-            }*/
             //Assume chunk is clean first
             MigrateMod.registerChunk(chunk, false);
-            //MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), false);
             
             int chunkMigrateVersion = event.getData().getCompoundTag("Level").getInteger(GlowstoneWireMod.MODID + ":MigrateVersion");
             //Compare Migrate Version - Future Proofing for possible migrations
@@ -56,10 +52,9 @@ public class MigrateEventHook {
                             //Limit iteration to highest block
                             for(int y=0; y<chunk.getHeightValue(x, z); y++) {
                                 //Find and replace block
-                                if(MigrateMod.remap.containsKey(chunk.getBlock(x, y, z))) {
+                                if(MigrateMod.canRemap(chunk.getBlock(x, y, z))) {
                                     //Mark chunk in memory
                                     MigrateMod.registerChunk(chunk, true);
-                                    //MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), true);
                                     FMLLog.info("Found dirty chunk (%d,%d)", chunk.xPosition, chunk.zPosition);
                                     //Break iteration
                                     break chunkIterate;
@@ -91,12 +86,11 @@ public class MigrateEventHook {
                             for(int y=0; y<chunk.getHeightValue(x, z); y++) {
                                 Block oldBlock = chunk.getBlock(x, y, z);
                                 //Find and replace block
-                                //TODO: Remove Map
-                                if(MigrateMod.remap.containsKey(oldBlock)) {
-                                    world.setBlock(chunk.xPosition*16+x, y, chunk.zPosition*16+z, MigrateMod.remap.get(oldBlock));
+                                if(MigrateMod.canRemap(oldBlock)) {
+                                    world.setBlock(chunk.xPosition*16+x, y, chunk.zPosition*16+z, MigrateMod.getRemap(oldBlock));
                                     FMLLog.info(
                                             "(%d,%d,%d) Replaced %s with %s", chunk.xPosition*16+x, y, chunk.zPosition*16+z,
-                                            oldBlock.getUnlocalizedName(), MigrateMod.remap.get(oldBlock).getUnlocalizedName());
+                                            oldBlock.getUnlocalizedName(), MigrateMod.getRemap(oldBlock).getUnlocalizedName());
                                 }
                             }
                         }
@@ -105,7 +99,6 @@ public class MigrateEventHook {
                 
                 //Mark as clean
                 MigrateMod.registerChunk(chunk, false);
-                //MigrateMod.chunks.get(world).put(chunk.getChunkCoordIntPair(), false);
             }
         }
     }
@@ -114,8 +107,7 @@ public class MigrateEventHook {
      * Handles Chunk Data Saving
      * @param event
      */
-    //TODO: uncomment annotation
-    //@SubscribeEvent
+    @SubscribeEvent
     public void chunkDataSave(ChunkDataEvent.Save event) {
         World world = event.world;
         Chunk chunk = event.getChunk();

@@ -45,13 +45,12 @@ public class MigrateMod {
 
     @Instance(MODID)
     public static MigrateMod instance;
+    
     @EventHandler
     public void preload(FMLPreInitializationEvent event) {
-        dummyBlock = new DummyBlock().setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust");
+        dummyBlock = new DummyBlock().setBlockName("glowstoneDust");
         GameRegistry.registerBlock(dummyBlock, "glowstone_wire");
-        //GameRegistry.registerBlock(dummyBlock, ItemBlock.class, "glowstone_wire", "GrygrFlzr_GlowstoneWire");
         remap.put(dummyBlock, GlowstoneWireMod.glowstoneWire);
-        
         
     }
     @EventHandler
@@ -60,7 +59,36 @@ public class MigrateMod {
         MinecraftForge.EVENT_BUS.register(new MigrateEventHook());
     }
     
+    //--------- Remap Handler --------//
     
+    /**
+     * Remaps a block to another block
+     * @param oldBlock The block to replace
+     * @param newBlock The block that will replace oldBlock
+     */
+    public static void registerRemap(Block oldBlock, Block newBlock) {
+        remap.put(oldBlock, newBlock);
+    }
+    
+    /**
+     * Checks if the block can be remapped
+     * @param block The block to test
+     * @return <b>TRUE</b> if block can be remapped, <b>FALSE</b> otherwise
+     */
+    public static boolean canRemap(Block block) {
+        return remap.containsKey(block);
+    }
+    
+    /**
+     * Gets the block to remap
+     * @param block The new block to replace
+     * @return Block
+     */
+    public static Block getRemap(Block block) {
+        return canRemap(block) ? remap.get(block) : null;
+    }
+    
+    //------ Chunk Map Handlers ------//
     
     /**
      * Registers a chunk to the chunk cache
@@ -91,6 +119,7 @@ public class MigrateMod {
     public static void registerChunk(Chunk chunk, boolean flagged) {
         registerChunk(chunk.worldObj, chunk.getChunkCoordIntPair(), flagged);
     }
+    
     /**
      * Checks if the given chunk in the world is flagged
      * @param world
@@ -132,6 +161,7 @@ public class MigrateMod {
     public static boolean isChunkFlagged(Chunk chunk) {
         return isChunkFlagged(chunk.worldObj, chunk.getChunkCoordIntPair());
     }
+    
     /**
      * Clears the chunk mapping
      */
