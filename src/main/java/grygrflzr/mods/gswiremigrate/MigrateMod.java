@@ -50,8 +50,7 @@ public class MigrateMod {
     public void preload(FMLPreInitializationEvent event) {
         dummyBlock = new DummyBlock().setBlockName("glowstoneDust");
         GameRegistry.registerBlock(dummyBlock, "glowstone_wire");
-        remap.put(dummyBlock, GlowstoneWireMod.glowstoneWire);
-        
+        registerRemap(dummyBlock, GlowstoneWireMod.glowstoneWire);
     }
     @EventHandler
     public void load(FMLInitializationEvent event) {
