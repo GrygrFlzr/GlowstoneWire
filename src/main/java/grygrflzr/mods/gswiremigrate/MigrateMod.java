@@ -17,20 +17,29 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * Placeholder mod to handle old blocks
+ * @author GrygrFlzr
+ */
 @Mod(modid = MigrateMod.MODID, name = MigrateMod.NAME, version = MigrateMod.VERSION)
 public class MigrateMod {
     public static final String MODID = "GrygrFlzr_GlowstoneWire";
     public static final String NAME = "Glowstone Wire Migration";
     public static final String VERSION = GlowstoneWireMod.VERSION;
     
+    /**
+     * The migration version to compare to
+     */
     public static final int MIGRATEVERSION = 1;
-    //Mapped by world - separate dimensions have identical chunk coordinates
+    /**
+     * A map of chunks mapped by world<br>
+     * Separate dimensions can have identical chunk coordinates
+     */
     public static Map<World, Map<ChunkCoordIntPair, Boolean>> chunks = new HashMap<World, Map<ChunkCoordIntPair, Boolean>>();
     /**
      * A map to replace one block with another
      */
     public static Map<Block, Block> remap = new HashMap<Block, Block>();
-    public static byte blockIDs;
     
     public static Block dummyBlock;
 
@@ -50,6 +59,9 @@ public class MigrateMod {
         //Defer event hook to init to allow adding to remap on preinit
         MinecraftForge.EVENT_BUS.register(new MigrateEventHook());
     }
+    
+    
+    
     /**
      * Registers a chunk to the chunk cache
      * @param world The world the chunk resides in
