@@ -28,13 +28,13 @@ public class BlockGlowstoneWire extends Block
     private boolean wiresProvidePower = false;
     private Set blocksNeedingUpdate = new HashSet();
     @SideOnly(Side.CLIENT)
-    private static IIcon field_94413_c;
+    private static IIcon iconCross;
     @SideOnly(Side.CLIENT)
-    private static IIcon field_94410_cO;
+    private static IIcon iconLine;
     @SideOnly(Side.CLIENT)
-    private static IIcon field_94411_cP;
+    private static IIcon iconCrossOverlay;
     @SideOnly(Side.CLIENT)
-    private static IIcon field_94412_cQ;
+    private static IIcon iconLineOverlay;
     private int wireColor = 0xFFFF00;
     private int wireColorR = 255;
     private int wireColorG = 255;
@@ -136,71 +136,71 @@ public class BlockGlowstoneWire extends Block
      * Calls World.notifyBlocksOfNeighborChange() for all neighboring blocks, but only if the given block is a redstone
      * wire.
      */
-    private void notifyWireNeighborsOfNeighborChange(World par1World, int par2, int par3, int par4)
+    private void notifyWireNeighborsOfNeighborChange(World world, int x, int y, int z)
     {
-        if (par1World.getBlock(par2, par3, par4) == this)
+        if (world.getBlock(x, y, z) == this)
         {
-            par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
-            par1World.notifyBlocksOfNeighborChange(par2 - 1, par3, par4, this);
-            par1World.notifyBlocksOfNeighborChange(par2 + 1, par3, par4, this);
-            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - 1, this);
-            par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + 1, this);
-            par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
-            par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
+            world.notifyBlocksOfNeighborChange(x, y, z, this);
+            world.notifyBlocksOfNeighborChange(x - 1, y, z, this);
+            world.notifyBlocksOfNeighborChange(x + 1, y, z, this);
+            world.notifyBlocksOfNeighborChange(x, y, z - 1, this);
+            world.notifyBlocksOfNeighborChange(x, y, z + 1, this);
+            world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+            world.notifyBlocksOfNeighborChange(x, y + 1, z, this);
         }
     }
 
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    public void onBlockAdded(World world, int x, int y, int z)
     {
-        super.onBlockAdded(par1World, par2, par3, par4);
+        super.onBlockAdded(world, x, y, z);
 
-        if (!par1World.isRemote)
+        if (!world.isRemote)
         {
-            this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
-            par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this);
-            par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this);
-            this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3, par4);
-            this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3, par4);
-            this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3, par4 - 1);
-            this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3, par4 + 1);
+            this.updateAndPropagateCurrentStrength(world, x, y, z);
+            world.notifyBlocksOfNeighborChange(x, y + 1, z, this);
+            world.notifyBlocksOfNeighborChange(x, y - 1, z, this);
+            this.notifyWireNeighborsOfNeighborChange(world, x - 1, y, z);
+            this.notifyWireNeighborsOfNeighborChange(world, x + 1, y, z);
+            this.notifyWireNeighborsOfNeighborChange(world, x, y, z - 1);
+            this.notifyWireNeighborsOfNeighborChange(world, x, y, z + 1);
 
-            if (par1World.getBlock(par2 - 1, par3, par4).isNormalCube())
+            if (world.getBlock(x - 1, y, z).isNormalCube())
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3 + 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(world, x - 1, y + 1, z);
             }
             else
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2 - 1, par3 - 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(world, x - 1, y - 1, z);
             }
 
-            if (par1World.getBlock(par2 + 1, par3, par4).isNormalCube())
+            if (world.getBlock(x + 1, y, z).isNormalCube())
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3 + 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(world, x + 1, y + 1, z);
             }
             else
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2 + 1, par3 - 1, par4);
+                this.notifyWireNeighborsOfNeighborChange(world, x + 1, y - 1, z);
             }
 
-            if (par1World.getBlock(par2, par3, par4 - 1).isNormalCube())
+            if (world.getBlock(x, y, z - 1).isNormalCube())
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 + 1, par4 - 1);
+                this.notifyWireNeighborsOfNeighborChange(world, x, y + 1, z - 1);
             }
             else
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 - 1, par4 - 1);
+                this.notifyWireNeighborsOfNeighborChange(world, x, y - 1, z - 1);
             }
 
-            if (par1World.getBlock(par2, par3, par4 + 1).isNormalCube())
+            if (world.getBlock(x, y, z + 1).isNormalCube())
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 + 1, par4 + 1);
+                this.notifyWireNeighborsOfNeighborChange(world, x, y + 1, z + 1);
             }
             else
             {
-                this.notifyWireNeighborsOfNeighborChange(par1World, par2, par3 - 1, par4 + 1);
+                this.notifyWireNeighborsOfNeighborChange(world, x, y - 1, z + 1);
             }
         }
     }
@@ -308,7 +308,7 @@ public class BlockGlowstoneWire extends Block
     /**
      * Returns the ID of the items to drop on destruction.
      */
-    public Item itemDropped(int par1, Random par2Random, int par3)
+    public Item getItemDropped(int par1, Random par2Random, int par3)
     {
         return Items.glowstone_dust;
     }
@@ -400,12 +400,11 @@ public class BlockGlowstoneWire extends Block
     {
         return par0IBlockAccess.getBlock(par1, par2, par3) == GlowstoneWireMod.glowstoneWire;
     }
-
-    @SideOnly(Side.CLIENT)
-
+    
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
+    @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         double d0 = (double)par2 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
@@ -425,34 +424,39 @@ public class BlockGlowstoneWire extends Block
         return par0IBlockAccess.getBlock(par1, par2, par3) == GlowstoneWireMod.glowstoneWire;
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public Item itemPicked(World par1World, int par2, int par3, int par4)
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World world, int x, int y, int z)
     {
         return Items.glowstone_dust;
     }
-
-    @SideOnly(Side.CLIENT)
-
+    
     /**
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
      * is the only chance you get to register icons.
      */
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
-        BlockGlowstoneWire.field_94413_c = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
-        BlockGlowstoneWire.field_94410_cO = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
-        BlockGlowstoneWire.field_94411_cP = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
-        BlockGlowstoneWire.field_94412_cQ = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
-        this.blockIcon = BlockGlowstoneWire.field_94413_c;
+        /*
+        BlockGlowstoneWire.iconCross = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
+        BlockGlowstoneWire.iconLine = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
+        BlockGlowstoneWire.iconCrossOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
+        BlockGlowstoneWire.iconLineOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
+        this.blockIcon = BlockGlowstoneWire.iconCross;
+        */
+        BlockGlowstoneWire.iconCross = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
+        BlockGlowstoneWire.iconLine = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
+        BlockGlowstoneWire.iconCrossOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
+        BlockGlowstoneWire.iconLineOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
+        this.blockIcon = BlockGlowstoneWire.iconCross;
     }
 
     @SideOnly(Side.CLIENT)
     public static IIcon getRedstoneWireIcon(String par0Str)
     {
-        return par0Str.equals("cross") ? field_94413_c : (par0Str.equals("line") ? field_94410_cO : (par0Str.equals("cross_overlay") ? field_94411_cP : (par0Str.equals("line_overlay") ? field_94412_cQ : null)));
+        return par0Str.equals("cross") ? iconCross : (par0Str.equals("line") ? iconLine : (par0Str.equals("cross_overlay") ? iconCrossOverlay : (par0Str.equals("line_overlay") ? iconLineOverlay : null)));
     }
 }

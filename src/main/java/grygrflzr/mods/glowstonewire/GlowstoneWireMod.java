@@ -8,7 +8,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -16,7 +15,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class GlowstoneWireMod {
     public static final String MODID = "GrygrFlzr_GlowstoneWire";
     public static final String NAME = "Glowstone Wire";
-    public static final String VERSION = "build 112";
+    public static final String VERSION = "1.0.1.112";
     
     public static Block glowstoneWire;
     public static int gsWireColorR = 255;
@@ -40,7 +39,7 @@ public class GlowstoneWireMod {
            gsWireColorR > 255 || gsWireColorR < 0 ||
            gsWireColorB > 255 || gsWireColorB < 0)
         { //use default if ANY value is out of range.
-        	FMLLog.warning("Glowstone Wire: Invalid colors, resetting to default");
+            FMLLog.warning("Glowstone Wire: Invalid colors, resetting to default");
             config.removeCategory(config.getCategory("color"));
             config.addCustomCategoryComment("color", "Color Range: 0-255, uses default values if out of range");
             gsWireColorR = config.get("color", "Wire Color Red", 255).getInt();
@@ -49,12 +48,10 @@ public class GlowstoneWireMod {
         }
         config.save();
         
-        glowstoneWire = new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB).setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust");
+        glowstoneWire = new BlockGlowstoneWire(gsWireColorR, gsWireColorG, gsWireColorB).setHardness(0.0F).setLightLevel(0.625F).setStepSound(Block.soundTypeStone).setBlockName("glowstoneDust").setBlockTextureName("redstone_dust");
+        
         GameRegistry.registerBlock(glowstoneWire, "glowstone_wire");
         proxy.registerRenderInformation();
-    }
-    @EventHandler
-    public void load(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new GlowstoneWireEventHook());
     }
 }
