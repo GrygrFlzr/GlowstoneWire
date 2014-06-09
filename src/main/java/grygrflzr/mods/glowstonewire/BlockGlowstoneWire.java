@@ -438,15 +438,8 @@ public class BlockGlowstoneWire extends Block
      * is the only chance you get to register icons.
      */
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
+    public void registerBlockIcons(IIconRegister par1IconRegister)
     {
-        /*
-        BlockGlowstoneWire.iconCross = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
-        BlockGlowstoneWire.iconLine = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
-        BlockGlowstoneWire.iconCrossOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
-        BlockGlowstoneWire.iconLineOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line_overlay");
-        this.blockIcon = BlockGlowstoneWire.iconCross;
-        */
         BlockGlowstoneWire.iconCross = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross");
         BlockGlowstoneWire.iconLine = par1IconRegister.registerIcon(this.getTextureName() + "_" + "line");
         BlockGlowstoneWire.iconCrossOverlay = par1IconRegister.registerIcon(this.getTextureName() + "_" + "cross_overlay");
