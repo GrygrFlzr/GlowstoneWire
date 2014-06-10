@@ -8,6 +8,8 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -53,5 +55,10 @@ public class GlowstoneWireMod {
         GameRegistry.registerBlock(glowstoneWire, "glowstone_wire");
         proxy.registerRenderInformation();
         MinecraftForge.EVENT_BUS.register(new GlowstoneWireEventHook());
+    }
+    @EventHandler
+    public void load(FMLInitializationEvent event) {
+        // Use when Waila supports icon-only changes
+        //FMLInterModComms.sendMessage("Waila", "register", "grygrflzr.mods.glowstonewire.WailaHandler.callbackRegister");
     }
 }
