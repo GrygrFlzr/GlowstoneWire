@@ -60,5 +60,6 @@ public class GlowstoneWireMod {
     public void load(FMLInitializationEvent event) {
         // Use when Waila supports icon-only changes
         //FMLInterModComms.sendMessage("Waila", "register", "grygrflzr.mods.glowstonewire.WailaHandler.callbackRegister");
+        FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addVersionCheck", "https://raw.githubusercontent.com/GrygrFlzr/GlowstoneWire/master/version.json");
     }
 }
