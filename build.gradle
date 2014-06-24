@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 version = "1.0.0.112"
 group= "grygrflzr.mods.glowstonewire" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "GlowstoneWire-1.7.2"
+archivesBaseName = "GlowstoneWire-1.7.x"
 
 minecraft {
     version = "1.7.2-10.12.2.1121"
