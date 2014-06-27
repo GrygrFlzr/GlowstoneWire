@@ -1,7 +1,7 @@
 {
     "versionList": [
         {
-            "mcVersion":"Minecraft 1.7.2",
+            "mcVersion":"Minecraft 1.7.10",
             "modVersion":"1.0.1.112",
             "changeLog": [
                 "Version Checker support",
@@ -13,6 +13,17 @@
         },
         {
             "mcVersion":"Minecraft 1.7.10-pre4",
+            "modVersion":"1.0.1.112",
+            "changeLog": [
+                "Version Checker support",
+                "Initial Waila support"
+            ],
+            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.0.112.jar",
+            "isDirectLink":"true",
+            "newFileName":"GlowstoneWire-1.7.x-1.0.0.112.jar"
+        },
+        {
+            "mcVersion":"Minecraft 1.7.2",
             "modVersion":"1.0.1.112",
             "changeLog": [
                 "Version Checker support",
