@@ -35,26 +35,13 @@ public class BlockGlowstoneWire extends Block
     private static IIcon iconCrossOverlay;
     @SideOnly(Side.CLIENT)
     private static IIcon iconLineOverlay;
-    private int wireColor = 0xFFFF00;
-    private int wireColorR = 255;
-    private int wireColorG = 255;
-    private int wireColorB = 0;
 
     public BlockGlowstoneWire()
-    {
-        this(255, 255, 0);
-    }
-    
-    public BlockGlowstoneWire(int r, int g, int b)
     {
         super(Material.circuits);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
         this.disableStats();
         this.setBlockTextureName("redstone_dust");
-        wireColorR = r;
-        wireColorG = g;
-        wireColorB = b;
-        wireColor = (r*65536)+(g*256)+b;
     }
 
     /**
@@ -99,7 +86,7 @@ public class BlockGlowstoneWire extends Block
      */
     public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        return wireColor;
+        return GlowstoneWireMod.gsWireColor;
     }
 
     /**
@@ -411,8 +398,13 @@ public class BlockGlowstoneWire extends Block
         double d1 = (double)((float)par3 + 0.0625F);
         double d2 = (double)par4 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
 
-        if(wireColorR > 0) par1World.spawnParticle("reddust", d0, d1, d2, (double)(((float)wireColorR)/255), (double)(((float)wireColorG)/255), (double)(((float)wireColorB)/255));
-        else par1World.spawnParticle("reddust", d0, d1, d2, (double)0.001F, (double)(((float)wireColorG)/255), (double)(((float)wireColorB)/255));
+
+        par1World.spawnParticle("reddust", d0, d1, d2,
+                /* Prevents a bug where R=0 turns into R=255 */
+                GlowstoneWireMod.gsWireColorR > 0 ? (double)GlowstoneWireMod.gsWireColorR/255 : 0.001D,
+                (double)GlowstoneWireMod.gsWireColorG/255,
+                (double)GlowstoneWireMod.gsWireColorB/255
+                );
     }
 
     /**

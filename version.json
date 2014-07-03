@@ -2,36 +2,36 @@
     "versionList": [
         {
             "mcVersion":"Minecraft 1.7.10",
-            "modVersion":"1.0.1.112",
+            "modVersion":"1.0.2.113",
             "changeLog": [
-                "Version Checker support",
-                "Initial Waila support"
+                "Forge GUI Config support",
+                "Requires Forge 10.13.0.1150+"
             ],
-            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.0.112.jar",
+            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.2.113.jar",
             "isDirectLink":"true",
-            "newFileName":"GlowstoneWire-1.7.x-1.0.0.112.jar"
+            "newFileName":"GlowstoneWire-1.7.x-1.0.2.113.jar"
         },
         {
             "mcVersion":"Minecraft 1.7.10-pre4",
-            "modVersion":"1.0.1.112",
+            "modVersion":"1.0.2.113",
             "changeLog": [
-                "Version Checker support",
-                "Initial Waila support"
+                "Forge GUI Config support",
+                "Requires Forge 10.12.2.1146"
             ],
-            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.0.112.jar",
+            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.2.113.jar",
             "isDirectLink":"true",
-            "newFileName":"GlowstoneWire-1.7.x-1.0.0.112.jar"
+            "newFileName":"GlowstoneWire-1.7.x-1.0.2.113.jar"
         },
         {
             "mcVersion":"Minecraft 1.7.2",
-            "modVersion":"1.0.1.112",
+            "modVersion":"1.0.2.113",
             "changeLog": [
-                "Version Checker support",
-                "Initial Waila support"
+                "Forge GUI Config support",
+                "Requires Forge 10.12.2.1147"
             ],
-            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.0.112.jar",
+            "updateURL":"https://dl.dropboxusercontent.com/u/25259720/Mods/Glowstone%20Wire/GlowstoneWire-1.7.x-1.0.2.113.jar",
             "isDirectLink":"true",
-            "newFileName":"GlowstoneWire-1.7.x-1.0.0.112.jar"
+            "newFileName":"GlowstoneWire-1.7.x-1.0.2.113.jar"
         }
     ]
 }

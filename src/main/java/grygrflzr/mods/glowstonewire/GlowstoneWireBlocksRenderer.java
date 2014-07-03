@@ -50,7 +50,7 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
 
         if (l == 0)
         {
-            f2 = (float)((float)GlowstoneWireMod.gsWireColorR)/255;
+            f2 = (float)GlowstoneWireMod.gsWireColorR/255;
         }
 
         float f3 = f1 * f1 * 0.7F - 0.5F;
@@ -58,12 +58,12 @@ public class GlowstoneWireBlocksRenderer implements ISimpleBlockRenderingHandler
 
         if (f3 < 0.0F)
         {
-            f3 = (float)((float)GlowstoneWireMod.gsWireColorG)/255;
+            f3 = (float)GlowstoneWireMod.gsWireColorG/255;
         }
 
         if (f4 < 0.0F)
         {
-            f4 = (float)((float)GlowstoneWireMod.gsWireColorB)/255;
+            f4 = (float)GlowstoneWireMod.gsWireColorB/255;
         }
 
         tessellator.setColorOpaque_F(f2, f3, f4);
