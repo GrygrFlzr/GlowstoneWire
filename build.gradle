@@ -22,8 +22,8 @@ group= "grygrflzr.mods.glowstonewire" // http://maven.apache.org/guides/mini/gui
 archivesBaseName = "GlowstoneWire-1.7.x"
 
 minecraft {
-    version = "1.7.2-10.12.2.1147"
-    assetDir = "eclipse/assets"
+    version = "1.7.10-10.13.3.1428-1.7.10"
+    runDir = "eclipse"
 }
 processResources
 {
